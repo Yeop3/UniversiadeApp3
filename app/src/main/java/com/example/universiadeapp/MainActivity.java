@@ -13,6 +13,10 @@ import com.example.universiadeapp.adapters.ScheduleAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Calendar;
+
+import devs.mulham.horizontalcalendar.HorizontalCalendar;
+import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -50,6 +54,29 @@ public class MainActivity extends AppCompatActivity {
         ScheduleAdapter adapter = new ScheduleAdapter(this, schedules);
 
         recyclerView.setAdapter(adapter);
+
+
+        /* starts before 1 month from now */
+        Calendar startDate = Calendar.getInstance();
+        startDate.set(2019,Calendar.MARCH,2);
+
+        /* ends after 1 month from now */
+        Calendar endDate = Calendar.getInstance();
+        endDate.set(2019,Calendar.MARCH,12);
+
+
+        HorizontalCalendar horizontalCalendar = new HorizontalCalendar.Builder(this, R.id.calendarView)
+                .range(startDate, endDate)
+                .datesNumberOnScreen(5)
+                .build();
+
+        horizontalCalendar.setCalendarListener(new HorizontalCalendarListener() {
+            @Override
+            public void onDateSelected(Calendar date, int position) {
+                //do something
+            }
+        });
+
 
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);

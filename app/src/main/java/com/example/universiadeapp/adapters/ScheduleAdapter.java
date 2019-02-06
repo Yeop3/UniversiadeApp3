@@ -24,6 +24,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
 
     }
 
+    @Override
     public ScheduleAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
 
         View view = inflater.inflate(R.layout.schedule_list, parent, false);
@@ -31,6 +32,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
 
     }
 
+    @Override
     public void onBindViewHolder(ScheduleAdapter.ViewHolder holder, int position){
 
         Schedule schedule = schedules.get(position);
@@ -39,6 +41,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
         holder.timeView.setText(schedule.getTimeEvent());
     }
 
+    @Override
     public int getItemCount(){
         return schedules.size();
     }

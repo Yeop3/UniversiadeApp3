@@ -12,8 +12,12 @@ import com.example.universiadeapp.Models.Schedule;
 import com.example.universiadeapp.adapters.ScheduleAdapter;
 
 import java.util.ArrayList;
+import java.util.BitSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Calendar;
+import java.util.Map;
+import java.util.Objects;
 
 import devs.mulham.horizontalcalendar.HorizontalCalendar;
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
@@ -22,6 +26,10 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
     List<Schedule> schedules = new ArrayList<>();
+    List<Schedule> dayFirst = new ArrayList<>();
+    List<Schedule> daySecond = new ArrayList<>();
+    ScheduleAdapter adapter;
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -48,12 +56,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setInitialData();
+        setInitialDayFirst();
+        setInitialDaySecond();
+
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list);
 
-        ScheduleAdapter adapter = new ScheduleAdapter(this, schedules);
+        adapter = new ScheduleAdapter(this, schedules);
 
         recyclerView.setAdapter(adapter);
+
+
+
+        final Map<Integer, List<Schedule>> dateSchedule = new HashMap<>();
+        dateSchedule.put( 2, dayFirst);
+        dateSchedule.put( 3, daySecond);
+
+
+
 
 
         /* starts before 1 month from now */
@@ -73,9 +92,14 @@ public class MainActivity extends AppCompatActivity {
         horizontalCalendar.setCalendarListener(new HorizontalCalendarListener() {
             @Override
             public void onDateSelected(Calendar date, int position) {
-                //do something
+                schedules.clear();
+                schedules.addAll(dateSchedule.get(date.get(Calendar.DAY_OF_MONTH)));
+                adapter.notifyDataSetChanged();
             }
         });
+
+        horizontalCalendar.selectDate(startDate, true);
+
 
 
         mTextMessage = (TextView) findViewById(R.id.message);
@@ -83,14 +107,23 @@ public class MainActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
-    private void setInitialData(){
+    private void setInitialDayFirst(){
 
-        schedules.add(new Schedule("Горные лыжи", "Бобровый лог", "14:00"));
-        schedules.add(new Schedule("Биатлон", "Стадион Ветлужанка", "15:00"));
-        schedules.add(new Schedule("Конькобежный спорт", "Ледовая Арена", "16:00"));
-        schedules.add(new Schedule("Фигурное катание", "Ледовый дворец", "17:00"));
+        dayFirst.add(new Schedule("Горные лыжи", "Бобровый лог", "14:00"));
+        dayFirst.add(new Schedule("Биатлон", "Стадион Ветлужанка", "15:00"));
+        dayFirst.add(new Schedule("Конькобежный спорт", "Ледовая Арена", "16:00"));
+        dayFirst.add(new Schedule("Фигурное катание", "Ледовый дворец", "17:00"));
 
 
+
+    }
+
+    private void setInitialDaySecond(){
+
+        daySecond.add(new Schedule("Сноубординг", "Бобровый лог", "14:00"));
+        daySecond.add(new Schedule("Хоккей", "Стадион Ветлужанка", "15:00"));
+        daySecond.add(new Schedule("Фристайл", "Ледовая Арена", "16:00"));
+        daySecond.add(new Schedule("Лыжные гонки", "Ледовый дворец", "17:00"));
 
     }
 

@@ -7,27 +7,12 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        tools:ignore="MissingConstraints">
-
-    <devs.mulham.horizontalcalendar.HorizontalCalendarView
-        android:id="@+id/calendarView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        app:textColorSelected="#FFFF"
-        tools:ignore="MissingConstraints" />
-
-        <android.support.v7.widget.RecyclerView
+        <FrameLayout
+            android:name="com.example.universiadeapp.Fragments.ScheduleFragment"
+            android:id="@+id/schedule"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/list"
-            app:layoutManager="LinearLayoutManager"/>
-
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints"/>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.universiadeapp.Fragments.ScheduleFragment;
 import com.example.universiadeapp.Models.Schedule;
 import com.example.universiadeapp.R;
 
@@ -27,7 +28,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
     @Override
     public ScheduleAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
 
-        View view = inflater.inflate(R.layout.schedule_list, parent, false);
+        View view = inflater.inflate(R.layout.fragment_schedule, parent, false);
         return new ViewHolder(view);
 
     }

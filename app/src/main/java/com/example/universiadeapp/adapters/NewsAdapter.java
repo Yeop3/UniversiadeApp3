@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
-import com.example.universiadeapp.Interface.OnClick;
-import com.example.universiadeapp.Models.News;
+import com.example.universiadeapp.utils.OnClick;
+import com.example.universiadeapp.models.News;
 import com.example.universiadeapp.R;
 
 import java.util.List;
@@ -37,7 +37,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     @Override
     public NewsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_news, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.news_list, parent, false);
 
         return new ViewHolder(itemView);
     }

@@ -1,4 +1,4 @@
-package com.example.universiadeapp.Interface;
+package com.example.universiadeapp.utils;
 
 public interface OnClick {
 

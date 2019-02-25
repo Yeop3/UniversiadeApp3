@@ -6,36 +6,29 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.TextView;
 
-import com.example.universiadeapp.Fragments.ScheduleFragment;
+import com.example.universiadeapp.fragments.NewsFragment;
+import com.example.universiadeapp.fragments.ScheduleFragment;
 
 
 public class MainActivity extends AppCompatActivity {
-
-    private TextView mTextMessage;
-
-
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            Fragment scheduleFragment = null;
+            Fragment fragment = null;
+
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    scheduleFragment = new ScheduleFragment();
-                    return true;
+                    fragment = new ScheduleFragment();
+                    break;
                 case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
-                    return true;
-                case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
-                    return true;
+                    fragment = new NewsFragment();
+                    break;
             }
-            loadFragment(scheduleFragment);
-            return false;
 
+            return loadFragment(fragment);
         }
     };
 
@@ -46,21 +39,19 @@ public class MainActivity extends AppCompatActivity {
 
         loadFragment(new ScheduleFragment());
 
-        mTextMessage = (TextView) findViewById(R.id.message);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
     protected boolean loadFragment(Fragment fragment) {
-
         if (fragment != null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.schedule, fragment)
+                    .replace(R.id.content, fragment)
                     .commit();
             return true;
         }
-        return false;
 
+        return false;
     }
 }

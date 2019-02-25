@@ -1,4 +1,4 @@
-package com.example.universiadeapp.Models;
+package com.example.universiadeapp.models;
 
 import java.io.Serializable;
 

@@ -7,9 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.universiadeapp.Fragments.ScheduleFragment;
-import com.example.universiadeapp.Models.Schedule;
 import com.example.universiadeapp.R;
+import com.example.universiadeapp.models.Schedule;
 
 import java.util.List;
 
@@ -18,7 +17,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
     private LayoutInflater inflater;
     private List<Schedule> schedules;
 
-    public ScheduleAdapter(Context context, List<Schedule> schedules){
+    public ScheduleAdapter(Context context, List<Schedule> schedules) {
 
         this.schedules = schedules;
         this.inflater = LayoutInflater.from(context);
@@ -26,16 +25,14 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
     }
 
     @Override
-    public ScheduleAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
-
-        View view = inflater.inflate(R.layout.fragment_schedule, parent, false);
+    public ScheduleAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = inflater.inflate(R.layout.schedule_list, parent, false);
         return new ViewHolder(view);
 
     }
 
     @Override
-    public void onBindViewHolder(ScheduleAdapter.ViewHolder holder, int position){
-
+    public void onBindViewHolder(ScheduleAdapter.ViewHolder holder, int position) {
         Schedule schedule = schedules.get(position);
         holder.nameView.setText(schedule.getNameEvent());
         holder.placeView.setText(schedule.getPlaceEvent());
@@ -43,19 +40,19 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
     }
 
     @Override
-    public int getItemCount(){
+    public int getItemCount() {
         return schedules.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-
         final TextView nameView, placeView, timeView;
-        ViewHolder(View view){
+
+        ViewHolder(View view) {
 
             super(view);
-            nameView = (TextView)view.findViewById(R.id.nameEvent);
-            placeView = (TextView)view.findViewById(R.id.placeEvent);
-            timeView = (TextView)view.findViewById(R.id.timeEvent);
+            nameView = (TextView) view.findViewById(R.id.nameEvent);
+            placeView = (TextView) view.findViewById(R.id.placeEvent);
+            timeView = (TextView) view.findViewById(R.id.timeEvent);
 
         }
     }

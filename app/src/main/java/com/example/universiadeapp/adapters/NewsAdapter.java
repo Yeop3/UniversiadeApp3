@@ -1,0 +1,84 @@
+package com.example.universiadeapp.adapters;
+
+import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+
+import com.example.universiadeapp.Interface.OnClick;
+import com.example.universiadeapp.Models.News;
+import com.example.universiadeapp.R;
+
+import java.util.List;
+
+public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
+
+    private Context context;
+    private List<News> newsList;
+    private OnClick clickListener;
+
+
+    public void mySetOnClickListener(OnClick clickListener){
+        this.clickListener = clickListener;
+    }
+
+
+    public NewsAdapter(Context context, List<News> newsList) {
+        this.newsList = newsList;
+        this.context = context;
+
+    }
+
+    @NonNull
+    @Override
+    public NewsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_news, parent, false);
+
+        return new ViewHolder(itemView);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
+
+        News news = newsList.get(position);
+
+
+        holder.textTitle.setText(news.getTitle());
+        holder.textContent.setText(news.getContent());
+        holder.textDate.setText(news.getDate());
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return newsList.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder{
+
+        public TextView textTitle, textContent, textDate;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            textTitle = (TextView) itemView.findViewById(R.id.news_title);
+            textContent = (TextView) itemView.findViewById(R.id.news_content);
+            textDate = (TextView) itemView.findViewById(R.id.news_date);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    clickListener.setOnClickListener(getAdapterPosition());
+                }
+            });
+        }
+
+    }
+
+}

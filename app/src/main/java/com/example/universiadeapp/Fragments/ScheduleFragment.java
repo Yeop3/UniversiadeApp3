@@ -5,6 +5,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,6 +49,7 @@ public class ScheduleFragment extends Fragment {
     List<Schedule> dayFirst = new ArrayList<>();
     List<Schedule> daySecond = new ArrayList<>();
     ScheduleAdapter adapter;
+    RecyclerView recyclerView;
 
     public ScheduleFragment() {
         // Required empty public constructor
@@ -86,11 +88,14 @@ public class ScheduleFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_schedule, container, false);
 
-        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.list);
+        recyclerView = rootView.findViewById(R.id.list);
 
-        adapter = new ScheduleAdapter(getContext(), schedules);
+        adapter = new ScheduleAdapter(getActivity(), schedules);
 
         recyclerView.setAdapter(adapter);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
 
         final Map<Integer, List<Schedule>> dateSchedule = new HashMap<>();
         dateSchedule.put( 2, dayFirst);
@@ -102,7 +107,7 @@ public class ScheduleFragment extends Fragment {
 
         /* ends after 1 month from now */
         Calendar endDate = Calendar.getInstance();
-        endDate.set(2019,Calendar.MARCH,12);
+        endDate.set(2019,Calendar.MARCH,3);
 
 
         HorizontalCalendar horizontalCalendar = new HorizontalCalendar.Builder(rootView, R.id.calendarView)

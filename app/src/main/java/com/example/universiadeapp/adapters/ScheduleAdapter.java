@@ -5,10 +5,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.universiadeapp.R;
 import com.example.universiadeapp.models.Schedule;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -46,6 +48,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         final TextView nameView, placeView, timeView;
+//        public ImageView imageView;
 
         ViewHolder(View view) {
 
@@ -53,7 +56,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
             nameView = (TextView) view.findViewById(R.id.nameEvent);
             placeView = (TextView) view.findViewById(R.id.placeEvent);
             timeView = (TextView) view.findViewById(R.id.timeEvent);
-
+//            imageView = (ImageView) view.findViewById(R.id.imageEvent);
         }
     }
 }

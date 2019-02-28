@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import com.example.universiadeapp.fragments.MapFragment;
 import com.example.universiadeapp.fragments.NewsFragment;
 import com.example.universiadeapp.fragments.ScheduleFragment;
 
@@ -20,11 +21,14 @@ public class MainActivity extends AppCompatActivity {
             Fragment fragment = null;
 
             switch (item.getItemId()) {
-                case R.id.navigation_home:
+                case R.id.navigation_news:
+                    fragment = new NewsFragment();
+                    break;
+                case R.id.navigation_schedule:
                     fragment = new ScheduleFragment();
                     break;
-                case R.id.navigation_dashboard:
-                    fragment = new NewsFragment();
+                case R.id.navigation_map:
+                    fragment = new MapFragment();
                     break;
             }
 
@@ -37,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        loadFragment(new ScheduleFragment());
+        loadFragment(new NewsFragment());
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);

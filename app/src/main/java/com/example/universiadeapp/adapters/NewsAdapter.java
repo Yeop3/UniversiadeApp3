@@ -6,12 +6,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
 import com.example.universiadeapp.utils.OnClick;
 import com.example.universiadeapp.models.News;
 import com.example.universiadeapp.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -48,7 +50,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
         News news = newsList.get(position);
 
-
+        Picasso.get().load(news.getImage()).into(holder.imageNews);
         holder.textTitle.setText(news.getTitle());
         holder.textContent.setText(news.getContent());
         holder.textDate.setText(news.getDate());
@@ -63,6 +65,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         public TextView textTitle, textContent, textDate;
+        public ImageView imageNews;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -70,6 +73,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
             textTitle = (TextView) itemView.findViewById(R.id.news_title);
             textContent = (TextView) itemView.findViewById(R.id.news_content);
             textDate = (TextView) itemView.findViewById(R.id.news_date);
+            imageNews = itemView.findViewById(R.id.news_image);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

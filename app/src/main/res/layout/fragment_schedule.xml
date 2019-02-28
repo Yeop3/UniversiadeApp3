@@ -9,10 +9,11 @@
     <devs.mulham.horizontalcalendar.HorizontalCalendarView
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@color/colorPrimary"
         app:textColorSelected="#FFFF"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        app:reverseLayout="true"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list"

@@ -38,7 +38,7 @@ public class ScheduleFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setInitialDayFirst();
-        setInitialDaySecond();
+//        setInitialDaySecond();
         setInitialSchedules();
 
         View rootView = inflater.inflate(R.layout.fragment_schedule, container, false);
@@ -67,6 +67,8 @@ public class ScheduleFragment extends Fragment {
                 .range(startDate, endDate)
                 .datesNumberOnScreen(5)
                 .defaultSelectedDate(startDate)
+                .configure().showBottomText(false)
+                .end()
                 .build();
 
         horizontalCalendar.setCalendarListener(new HorizontalCalendarListener() {
@@ -88,12 +90,12 @@ public class ScheduleFragment extends Fragment {
         dayFirst.add(new Schedule("Фигурное катание", "Ледовый дворец", "17:00"));
     }
 
-    private void setInitialDaySecond() {
-        daySecond.add(new Schedule("Сноубординг", "Бобровый лог", "14:00"));
-        daySecond.add(new Schedule("Хоккей", "Стадион Ветлужанка", "15:00"));
-        daySecond.add(new Schedule("Фристайл", "Ледовая Арена", "16:00"));
-        daySecond.add(new Schedule("Лыжные гонки", "Ледовый дворец", "17:00"));
-    }
+//    private void setInitialDaySecond() {
+//        daySecond.add(new Schedule("Сноубординг", "Бобровый лог", "14:00"));
+//        daySecond.add(new Schedule("Хоккей", "Стадион Ветлужанка", "15:00"));
+//        daySecond.add(new Schedule("Фристайл", "Ледовая Арена", "16:00"));
+//        daySecond.add(new Schedule("Лыжные гонки", "Ледовый дворец", "17:00"));
+//    }
 
     private void setInitialSchedules() {
         schedules.addAll(dayFirst);

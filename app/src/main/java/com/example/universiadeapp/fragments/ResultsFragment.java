@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.example.universiadeapp.R;
 import com.example.universiadeapp.adapters.ResultsAdapter;
@@ -25,7 +26,7 @@ import java.util.Locale;
 
 public class ResultsFragment extends Fragment {
 
-    private static ProgressDialog mProgressDialog;
+    private ProgressBar progressBar;
     private static List<Results> resultsList = new ArrayList<>();
     private static ResultsAdapter resultsAdapter;
 
@@ -42,6 +43,7 @@ public class ResultsFragment extends Fragment {
 
         RecyclerView recyclerView = rootView.findViewById(R.id.results_list);
         resultsAdapter = new ResultsAdapter(getContext(), resultsList);
+        progressBar = rootView.findViewById(R.id.results_progress);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(resultsAdapter);
@@ -55,6 +57,7 @@ public class ResultsFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            resultsList.clear();
         }
 
         @Override
@@ -117,6 +120,7 @@ public class ResultsFragment extends Fragment {
         }
 
         protected void onPostExecute(Void result) {
+            progressBar.setVisibility(View.GONE);
             resultsAdapter.notifyDataSetChanged();
         }
     }

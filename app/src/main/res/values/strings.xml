@@ -1,16 +1,9 @@
 <resources>
-    <string name="app_name">UniversiadeApp</string>
+    <string name="app_name">Universiade2019</string>
     <string name="title_news">News</string>
     <string name="title_schedule">Schedule</string>
     <string name="title_score">Results</string>
     <string name="title_map">Map</string>
 
-
-    <!--Events-->
-
-    <string name="Bandy_group_stage">Bandy: Group stage</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

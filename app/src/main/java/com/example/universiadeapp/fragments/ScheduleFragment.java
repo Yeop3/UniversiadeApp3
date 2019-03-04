@@ -1,6 +1,5 @@
 package com.example.universiadeapp.fragments;
 
-import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.example.universiadeapp.R;
 import com.example.universiadeapp.adapters.ScheduleAdapter;
@@ -35,7 +35,6 @@ import devs.mulham.horizontalcalendar.HorizontalCalendar;
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
 
 public class ScheduleFragment extends Fragment {
-    private static ProgressDialog mProgressDialog;
     List<Schedule> schedules = new ArrayList<>();
     List<Schedule> schedule = new ArrayList<>();
     HorizontalCalendar horizontalCalendar;
@@ -75,10 +74,10 @@ public class ScheduleFragment extends Fragment {
         horizontalCalendar = new HorizontalCalendar.Builder(rootView, R.id.calendarView)
                 .range(startDate, endDate)
                 .datesNumberOnScreen(5)
-                .defaultSelectedDate(startDate)
                 .configure().showBottomText(false)
                 .end()
                 .build();
+
 
         horizontalCalendar.setCalendarListener(new HorizontalCalendarListener() {
             @Override
@@ -92,10 +91,8 @@ public class ScheduleFragment extends Fragment {
             }
         });
 
-        if (!sPref.getBoolean("parse", false))
-            new newsParse().execute();
-        else
-            horizontalCalendar.goToday(true);
+        new newsParse().execute();
+
         return rootView;
     }
 
@@ -104,9 +101,7 @@ public class ScheduleFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mProgressDialog = new ProgressDialog(getContext());
-            mProgressDialog.setIndeterminate(false);
-            mProgressDialog.show();
+            horizontalCalendar.goToday(true);
         }
 
 
@@ -177,11 +172,6 @@ public class ScheduleFragment extends Fragment {
 
         protected void onPostExecute(Void result) {
             adapter.notifyDataSetChanged();
-            Calendar startDate = Calendar.getInstance();
-            startDate.set(2019, Calendar.MARCH, 1);
-//            horizontalCalendar.selectDate(startDate,false);
-            horizontalCalendar.goToday(true);
-            mProgressDialog.dismiss();
         }
     }
 

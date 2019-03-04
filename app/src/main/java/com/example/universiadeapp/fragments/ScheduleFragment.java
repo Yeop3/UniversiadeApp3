@@ -1,20 +1,22 @@
 package com.example.universiadeapp.fragments;
 
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.universiadeapp.R;
 import com.example.universiadeapp.adapters.ScheduleAdapter;
-import com.example.universiadeapp.models.News;
 import com.example.universiadeapp.models.Schedule;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -24,50 +26,22 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 import devs.mulham.horizontalcalendar.HorizontalCalendar;
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
 
 public class ScheduleFragment extends Fragment {
+    private static ProgressDialog mProgressDialog;
     List<Schedule> schedules = new ArrayList<>();
     List<Schedule> schedule = new ArrayList<>();
     HorizontalCalendar horizontalCalendar;
-
-    private static ProgressDialog mProgressDialog;
-//    type
-    String hokey_group_stage = "Хоккей: Групповой этап";
-    String bandy_group_stage = "Хоккей с мячом: Групповой этап";
-    String biathlon = "";
-    String curling_group_stage = "Керлинг: Групповой этап";
-    String cross_country_skiing_5 = "Лыжные гонки: Финал 5км";
-    String snowboard_qualif = "Сноуборд-кросс: Квалификация";
-    String ski_orienteering = "";
-    String short_track = "";
-    String freestyle_sking = "";
-    String figure_skating = "";
-    String alpin_skiing = "Горные лыжи: Финал";
-
-//    place
-    String hokey_men_place = "Ледовый дворец «Кристалл арена»";
-    String hokey_women_place = "Крытый каток «Первомайский»";
-    String bandy_place = "Стадион «Енисей»";
-    String alpin_skiing_place = "Фанпарк «Бобровый лог»";
-    String curling_place = "Дворец спорта им. И. Ярыгина";
-    String freestyle_skiing_place = "Кластер «Сопка»";
-    String figure_skating_place = "Платинум Арена";
-    String short_track_place = "Комплекс «Арена. Север»";
-    String ski_orienteering_place = "СТК «Академия зимних видов спорта»";
-
-
-
     ScheduleAdapter adapter;
     RecyclerView recyclerView;
+    SharedPreferences sPref;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,7 +54,9 @@ public class ScheduleFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_schedule, container, false);
 
-        new newsParse().execute();
+        sPref = PreferenceManager.getDefaultSharedPreferences(getContext());
+        schedules.clear();
+        schedules.addAll(Arrays.asList(new Gson().fromJson(sPref.getString("schedule", "[]"), Schedule[].class)));
 
         recyclerView = rootView.findViewById(R.id.list);
 
@@ -108,15 +84,18 @@ public class ScheduleFragment extends Fragment {
             @Override
             public void onDateSelected(Calendar date, int position) {
                 schedule.clear();
-                    for (int j = 0; j<schedules.size();j++) {
-                        if (schedules.get(j).getDateEvent() == date.get(Calendar.DAY_OF_MONTH))
-                            schedule.add(schedules.get(j));
-                    }
+                for (int j = 0; j < schedules.size(); j++) {
+                    if (schedules.get(j).getDateEvent() == date.get(Calendar.DAY_OF_MONTH))
+                        schedule.add(schedules.get(j));
+                }
                 adapter.notifyDataSetChanged();
             }
         });
 
-
+        if (!sPref.getBoolean("parse", false))
+            new newsParse().execute();
+        else
+            horizontalCalendar.goToday(true);
         return rootView;
     }
 
@@ -142,9 +121,8 @@ public class ScheduleFragment extends Fragment {
             SimpleDateFormat dateFormat = new SimpleDateFormat("d");
             SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
-           try{
+            try {
                 mDocument = Jsoup.connect("https://www.championat.com/other/_krasnoyarsk2019/tournament/535/calendar/").get();
-
 
                 mElements = mDocument.select(".tournament-calendar__row");
 
@@ -157,7 +135,7 @@ public class ScheduleFragment extends Fragment {
                     java.util.Date fullDate = null;
                     try {
                         fullDate = FullDateFormat.parse(FullDate);
-                        fullDate = new Date(fullDate.getTime()+14400000);
+                        fullDate = new Date(fullDate.getTime() + 14400000);
                     } catch (ParseException e) {
                         try {
                             fullDate = partDateFormat.parse(FullDate);
@@ -169,7 +147,7 @@ public class ScheduleFragment extends Fragment {
                     if (fullDate != null) {
                         Date = Integer.valueOf(dateFormat.format(fullDate));
                         Time = timeFormat.format(fullDate);
-                    }else {
+                    } else {
                         Date = Integer.valueOf(dateFormat.format(fullDate));
                     }
 
@@ -183,9 +161,14 @@ public class ScheduleFragment extends Fragment {
                     Elements urlParse = mDocument.select(".tournament-calendar__name").select("a").eq(i);
                     String Url = urlParse.attr("href");
 
-                    schedules.add(new Schedule(Data,Date,Time,Url,Type));
+                    schedules.add(new Schedule(Data, Date, Time, Url, Type));
                 }
-            }catch(IOException e) {
+
+                SharedPreferences.Editor editor = sPref.edit();
+                editor.putString("schedule", new GsonBuilder().create().toJson(schedules));
+                editor.putBoolean("parse", true);
+                editor.apply();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
@@ -195,7 +178,7 @@ public class ScheduleFragment extends Fragment {
         protected void onPostExecute(Void result) {
             adapter.notifyDataSetChanged();
             Calendar startDate = Calendar.getInstance();
-            startDate.set(2019,Calendar.MARCH,1);
+            startDate.set(2019, Calendar.MARCH, 1);
 //            horizontalCalendar.selectDate(startDate,false);
             horizontalCalendar.goToday(true);
             mProgressDialog.dismiss();

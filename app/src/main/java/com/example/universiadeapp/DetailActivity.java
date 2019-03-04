@@ -13,18 +13,23 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class DetailActivity extends AppCompatActivity {
-    String TitleDetail;
+    private TextView titleNews;
+    private TextView contentNews;
+
+    private String TitleDetail;
     private News dataFromIntent;
-    List<String> Content = new ArrayList<>();
+    private List<String> Content = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.news_list_detail);
+        setContentView(R.layout.activity_news);
+
+        titleNews = findViewById(R.id.news_title_detail);
+        contentNews = findViewById(R.id.news_content_detail);
 
         dataFromIntent = (News) getIntent().getSerializableExtra("news");
 
@@ -66,13 +71,12 @@ public class DetailActivity extends AppCompatActivity {
 
         protected void onPostExecute(Void result){
             super.onPostExecute(result);
-            TextView titleNews = (TextView) findViewById(R.id.news_title_detail);
-            TextView contentNews = (TextView) findViewById(R.id.news_content_detail);
             titleNews.setText(TitleDetail);
+
             StringBuilder builder = new StringBuilder();
-            for (String details : Content){
-                builder.append(details + "\n"+"\n");
-            }
+            for (String details : Content)
+                builder.append(details).append("\n");
+
             contentNews.setText(builder.toString());
 
         }

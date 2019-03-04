@@ -1,10 +1,8 @@
 package com.example.universiadeapp.fragments;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,16 +26,16 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class NewsFragment extends Fragment implements OnClick {
-    private static ProgressDialog mProgressDialog;
-    private static List<News> newsList = new ArrayList<>();
-    private static NewsAdapter newsAdapter;
-    Boolean isScrolling = false;
-    int currentItems, totalItems, scrollOutItems;
-    ProgressBar progressBar;
-    public static int page = 1;
+    private ProgressBar progressBar;
+
+    private List<News> newsList = new ArrayList<>();
+    private Boolean isScrolling = false, loading = false;
+    private int page = 1, currentItems, totalItems, scrollOutItems;
+
+    private RecyclerView.LayoutManager layoutManager;
+    private NewsAdapter newsAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,10 +47,11 @@ public class NewsFragment extends Fragment implements OnClick {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_news, container, false);
 
-        RecyclerView recyclerView = rootView.findViewById(R.id.list_news);
-        progressBar = (ProgressBar) recyclerView.findViewById(R.id.progress);
+        progressBar = rootView.findViewById(R.id.news_progress);
+
+        RecyclerView recyclerView = rootView.findViewById(R.id.news_list);
         newsAdapter = new NewsAdapter(getContext(), newsList);
-        final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(newsAdapter);
         newsAdapter.mySetOnClickListener(this);
@@ -60,9 +59,8 @@ public class NewsFragment extends Fragment implements OnClick {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL)
                     isScrolling = true;
-                }
             }
 
             @Override
@@ -72,7 +70,7 @@ public class NewsFragment extends Fragment implements OnClick {
                 totalItems = layoutManager.getItemCount();
                 scrollOutItems = ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition();
 
-                if (isScrolling  && (currentItems+scrollOutItems == totalItems)){
+                if (!loading && isScrolling && (currentItems + scrollOutItems == totalItems)) {
                     page++;
                     new newsParse().execute();
                     isScrolling = false;
@@ -80,6 +78,7 @@ public class NewsFragment extends Fragment implements OnClick {
 
             }
         });
+
         new newsParse().execute();
         return rootView;
     }
@@ -96,46 +95,35 @@ public class NewsFragment extends Fragment implements OnClick {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mProgressDialog = new ProgressDialog(getContext());
-            mProgressDialog.setIndeterminate(false);
-//            mProgressDialog.show();
+            loading = true;
         }
-
 
         @Override
         protected Void doInBackground(Void... params) {
-            Document mDocument = null;
             try {
-                    if (Locale.getDefault().getLanguage().equals("ru")) {
-                        mDocument = Jsoup.connect("https://krsk2019.ru/ru/news_items?page=" + page + "#page-" + page).get();
-                    } else {
-                        mDocument = Jsoup.connect("https://krsk2019.ru/en/news_items?page=" + page + "#page-" + page).get();
-                    }
+                Document mDocument = Jsoup.connect("https://krsk2019.ru/ru/news_items?page=" + page + "#page-" + page).get();
 
-                    //               mDocument = Jsoup.connect("https://krsk2019.ru/ru/news_items?page=1#page-1").get();
+                Elements mElements = mDocument.select(".news__unit");
+                int mElementsSize = mElements.size();
 
+                for (int i = 0; i < mElementsSize; i++) {
+                    Elements titleParse = mDocument.select(".header3").eq(i);
+                    String Title = titleParse.text();
 
-                    Elements mElements = mDocument.select(".news__unit");
-                    int mElementsSize = mElements.size();
+                    Elements contentParse = mDocument.select(".p1").eq(i);
+                    String Content = contentParse.text();
 
-                    for (int i = 0; i < mElementsSize; i++) {
-                        Elements titleParse = mDocument.select(".header3").eq(i);
-                        String Title = titleParse.text();
+                    Elements dateParse = mDocument.select(".b-square--s").select("time").eq(i);
+                    String Date = dateParse.text();
 
-                        Elements contentParse = mDocument.select(".p1").eq(i);
-                        String Content = contentParse.text();
+                    Elements urlParse = mDocument.select(".header3").select("a").eq(i);
+                    String Url = urlParse.attr("href");
 
-                        Elements dateParse = mDocument.select(".b-square--s").select("time").eq(i);
-                        String Date = dateParse.text();
+                    Elements imageParse = mDocument.select(".news__unit__img-box").select("img").eq(i);
+                    String Image = imageParse.attr("src");
 
-                        Elements urlParse = mDocument.select(".header3").select("a").eq(i);
-                        String Url = urlParse.attr("href");
-
-                        Elements imageParse = mDocument.select(".news__unit__img-box").select("img").eq(i);
-                        String Image = imageParse.attr("src");
-
-                        newsList.add(new News(Title, Content, Date, Url, Image));
-                    }
+                    newsList.add(new News(Title, Content, Date, Url, Image));
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -143,8 +131,9 @@ public class NewsFragment extends Fragment implements OnClick {
         }
 
         protected void onPostExecute(Void result) {
+            loading = false;
+            progressBar.setVisibility(View.GONE);
             newsAdapter.notifyDataSetChanged();
-            mProgressDialog.dismiss();
         }
     }
 }

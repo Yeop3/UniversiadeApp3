@@ -3,26 +3,22 @@ package com.example.universiadeapp.models;
 import java.io.Serializable;
 
 public class News implements Serializable {
-
     public String title;
     public String content;
     public String date;
     public String url;
     public String image;
 
-
-    public News(){
+    public News() {
 
     }
 
-    public News(String title, String content, String date, String url, String image){
-
+    public News(String title, String content, String date, String url, String image) {
         this.content = content;
         this.title = title;
         this.date = date;
         this.url = url;
         this.image = image;
-
     }
 
     public String getTitle() {

@@ -1,19 +1,17 @@
 package com.example.universiadeapp.fragments;
 
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.universiadeapp.R;
-import com.example.universiadeapp.adapters.NewsAdapter;
 import com.example.universiadeapp.adapters.ResultsAdapter;
-import com.example.universiadeapp.models.News;
 import com.example.universiadeapp.models.Results;
 
 import org.jsoup.Jsoup;
@@ -40,7 +38,14 @@ public class ResultsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_news, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_results, container, false);
+
+        RecyclerView recyclerView = rootView.findViewById(R.id.results_list);
+        resultsAdapter = new ResultsAdapter(getContext(), resultsList);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(resultsAdapter);
+
         new newsParse().execute();
         return rootView;
     }
@@ -50,11 +55,7 @@ public class ResultsFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mProgressDialog = new ProgressDialog(getContext());
-            mProgressDialog.setIndeterminate(false);
-//            mProgressDialog.show();
         }
-
 
         @Override
         protected Void doInBackground(Void... params) {
@@ -71,10 +72,9 @@ public class ResultsFragment extends Fragment {
             int c = 2;
             int j = 3;
             try {
-                    iDocument = Jsoup.connect("https://www.championat.com/other/_krasnoyarsk2019/tournament/535/standing/").get();
-                    mElements = iDocument.select("tbody > tr");
-
-                    mDocument = Jsoup.connect("https://en.wikipedia.org/wiki/2019_Winter_Universiade").get();
+                iDocument = Jsoup.connect("https://www.championat.com/other/_krasnoyarsk2019/tournament/535/standing/").get();
+                mElements = iDocument.select("tbody > tr");
+                mDocument = Jsoup.connect("https://en.wikipedia.org/wiki/2019_Winter_Universiade").get();
 
                 int mElementsSize = mElements.size();
 
@@ -86,13 +86,12 @@ public class ResultsFragment extends Fragment {
                     if (Locale.getDefault().getLanguage().equals("ru")) {
                         Elements countryParse = iDocument.select("tbody > tr").select(".medals-table__title").select(".table-item__name").eq(i);
                         Country = countryParse.text();
-                    }else {
+                    } else {
                         Elements countryParse = mDocument.select(".plainrowheaders").select("tbody").select("tr > th").select("a").eq(i);
                         Country = countryParse.attr("title");
                     }
 
-
-                    Elements goldParse = iDocument.select("tbody").select("tr > td").select("._w-10").eq(i+a);
+                    Elements goldParse = iDocument.select("tbody").select("tr > td").select("._w-10").eq(i + a);
                     Gold = goldParse.text();
 
                     Elements silverParse = iDocument.select("tbody").select("tr > td").select("._w-10").eq(i + b);
@@ -104,14 +103,12 @@ public class ResultsFragment extends Fragment {
                     Elements totalParse = iDocument.select("tbody").select("tr > td").select("._w-10").eq(i + j);
                     Total = totalParse.text();
 
-                        a+=3;
-                        b+=3;
-                        c+=3;
-                        j+=3;
+                    a += 3;
+                    b += 3;
+                    c += 3;
+                    j += 3;
 
-
-
-                    resultsList.add(new Results(i+1, Image, Country, Gold, Silver, Bronze, Total));
+                    resultsList.add(new Results(i + 1, Image, Country, Gold, Silver, Bronze, Total));
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -121,7 +118,6 @@ public class ResultsFragment extends Fragment {
 
         protected void onPostExecute(Void result) {
             resultsAdapter.notifyDataSetChanged();
-            mProgressDialog.dismiss();
         }
     }
 }

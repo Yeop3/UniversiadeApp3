@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.universiadeapp.R;
-import com.example.universiadeapp.models.News;
 import com.example.universiadeapp.models.Results;
 import com.squareup.picasso.Picasso;
 
@@ -41,7 +40,7 @@ public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.ViewHold
 
         Results results = resultsList.get(position);
 
-        holder.positionView.setText(results.getPositionInTable());
+        holder.positionView.setText(String.valueOf(results.getPositionInTable()));
         Picasso.get().load(results.getImageCountry()).into(holder.imageView);
         holder.countryView.setText(results.getCountry());
         holder.goldView.setText(results.getGoldMedal());

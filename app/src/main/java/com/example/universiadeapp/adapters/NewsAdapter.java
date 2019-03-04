@@ -9,52 +9,42 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
-import com.example.universiadeapp.utils.OnClick;
-import com.example.universiadeapp.models.News;
 import com.example.universiadeapp.R;
+import com.example.universiadeapp.models.News;
+import com.example.universiadeapp.utils.OnClick;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
-
     private Context context;
     private List<News> newsList;
     private OnClick clickListener;
 
-
-    public void mySetOnClickListener(OnClick clickListener){
-        this.clickListener = clickListener;
-    }
-
-
     public NewsAdapter(Context context, List<News> newsList) {
         this.newsList = newsList;
         this.context = context;
+    }
 
+    public void mySetOnClickListener(OnClick clickListener) {
+        this.clickListener = clickListener;
     }
 
     @NonNull
     @Override
     public NewsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.news_list, parent, false);
-
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_news, parent, false);
         return new ViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
-
         News news = newsList.get(position);
 
         Picasso.get().load(news.getImage()).into(holder.imageNews);
         holder.textTitle.setText(news.getTitle());
         holder.textContent.setText(news.getContent());
         holder.textDate.setText(news.getDate());
-
     }
 
     @Override
@@ -62,18 +52,17 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         return newsList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder {
+        TextView textTitle, textContent, textDate;
+        ImageView imageNews;
 
-        public TextView textTitle, textContent, textDate;
-        public ImageView imageNews;
+        ViewHolder(@NonNull View view) {
+            super(view);
 
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-
-            textTitle = (TextView) itemView.findViewById(R.id.news_title);
-            textContent = (TextView) itemView.findViewById(R.id.news_content);
-            textDate = (TextView) itemView.findViewById(R.id.news_date);
-            imageNews = itemView.findViewById(R.id.news_image);
+            textTitle = view.findViewById(R.id.news_item_title);
+            textContent = view.findViewById(R.id.news_item_content);
+            textDate = view.findViewById(R.id.news_item_date);
+            imageNews = view.findViewById(R.id.news_item_image);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -82,7 +71,5 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
                 }
             });
         }
-
     }
-
 }

@@ -4,19 +4,21 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-
     <TextView
         android:id="@+id/timeEvent"
-        android:layout_width="50dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:gravity="center"
-        android:textStyle="bold"
-        android:textColor="@android:color/background_dark"
-        android:textSize="15dp"/>
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:orientation="vertical">
 
         <TextView
@@ -24,20 +26,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorPrimary"
-            android:paddingBottom="3dp"
-            android:textSize="16dp"/>
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/dataEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="7dp"
-            android:textColor="@color/design_default_color_primary"
-            android:textSize="14dp"/>
+            android:paddingBottom="4dp"
+            android:textColor="#8A000000"
+            android:textSize="14sp" />
+
         <View
             android:layout_width="wrap_content"
-            android:layout_height="1dp"
-            android:background="@color/bottomLine"/>
+            android:layout_height="0.5dp"
+            android:background="#1D000000" />
     </LinearLayout>
-
 </LinearLayout>

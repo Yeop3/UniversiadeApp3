@@ -17,11 +17,11 @@ import java.util.List;
 public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHolder> {
 
     private LayoutInflater inflater;
-    private List<Schedule> schedules;
+    private List<Schedule> schedule;
 
-    public ScheduleAdapter(Context context, List<Schedule> schedules) {
+    public ScheduleAdapter(Context context, List<Schedule> schedule) {
 
-        this.schedules = schedules;
+        this.schedule = schedule;
         this.inflater = LayoutInflater.from(context);
 
     }
@@ -35,28 +35,25 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ScheduleAdapter.ViewHolder holder, int position) {
-        Schedule schedule = schedules.get(position);
-        holder.nameView.setText(schedule.getNameEvent());
-        holder.placeView.setText(schedule.getPlaceEvent());
-        holder.timeView.setText(schedule.getTimeEvent());
+        Schedule schedule_t = schedule.get(position);
+        holder.timeView.setText(schedule_t.getTimeEvent());
+        holder.typeView.setText(schedule_t.getTypeEvent());
+        holder.dataView.setText(schedule_t.getDataEvent());
     }
 
     @Override
     public int getItemCount() {
-        return schedules.size();
+        return schedule.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        final TextView nameView, placeView, timeView;
-//        public ImageView imageView;
-
+        final TextView dataView, typeView, timeView;
         ViewHolder(View view) {
 
             super(view);
-            nameView = (TextView) view.findViewById(R.id.nameEvent);
-            placeView = (TextView) view.findViewById(R.id.placeEvent);
             timeView = (TextView) view.findViewById(R.id.timeEvent);
-//            imageView = (ImageView) view.findViewById(R.id.imageEvent);
+            typeView = (TextView) view.findViewById(R.id.typeEvent);
+            dataView = (TextView) view.findViewById(R.id.dataEvent);
         }
     }
 }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Универсиада 2019</string>
+    <string name="title_news">Новости</string>
+    <string name="title_schedule">Расписание</string>
+    <string name="title_score">Резульаты</string>
+    <string name="title_map">Карта</string>
+
+
+    <!--Мероприятия-->
+    <string name="Bandy_group_stage">Хоккей с мячом: Групповой этап</string>
+</resources>

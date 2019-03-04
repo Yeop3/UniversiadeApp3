@@ -12,11 +12,14 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class DetailActivity extends AppCompatActivity {
     String TitleDetail;
-    String ContentDetail;
     private News dataFromIntent;
+    List<String> Content = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +42,21 @@ public class DetailActivity extends AppCompatActivity {
                 Elements titleDetail = document.select(".c-decoration-wrap").select(".header1");
                 TitleDetail = titleDetail.text();
 
-                Elements contentDetail = document.select(".c-decoration-wrap").select(".common-table");
-                ContentDetail = contentDetail.text();
+                Elements mElements = document.select(".c-decoration-wrap").select(".common-table").select("div");
+                int mElementsSize = mElements.size();
+                if (mElements.size() > 1) {
+                    for (int i = 1; i < mElementsSize; i++) {
+                        Elements contentDetail = document.select(".c-decoration-wrap").select(".common-table").select("div").eq(i);
+                        Content.add(contentDetail.text());
+                    }
+                }else {
+                    Elements pElements = document.select(".c-decoration-wrap").select(".common-table").select("p");
+                    int pElementsSize = pElements.size();
+                    for (int i = 1; i < pElementsSize; i++) {
+                        Elements contentDetail = document.select(".c-decoration-wrap").select(".common-table").select("p").eq(i);
+                        Content.add(contentDetail.text());
+                    }
+                }
 
             }catch (IOException e){
                 e.printStackTrace();
@@ -53,7 +69,12 @@ public class DetailActivity extends AppCompatActivity {
             TextView titleNews = (TextView) findViewById(R.id.news_title_detail);
             TextView contentNews = (TextView) findViewById(R.id.news_content_detail);
             titleNews.setText(TitleDetail);
-            contentNews.setText(ContentDetail);
+            StringBuilder builder = new StringBuilder();
+            for (String details : Content){
+                builder.append(details + "\n"+"\n");
+            }
+            contentNews.setText(builder.toString());
+
         }
     }
 }

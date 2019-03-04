@@ -2,39 +2,42 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="10dp"
     android:orientation="horizontal">
+
 
     <TextView
         android:id="@+id/timeEvent"
         android:layout_width="50dp"
         android:layout_height="match_parent"
-        android:gravity="center" />
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textColor="@android:color/background_dark"
+        android:textSize="15dp"/>
 
     <LinearLayout
-        android:layout_width="314dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/nameEvent"
+            android:id="@+id/typeEvent"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:paddingBottom="3dp"
+            android:textSize="16dp"/>
 
         <TextView
-            android:id="@+id/placeEvent"
+            android:id="@+id/dataEvent"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:paddingBottom="7dp"
+            android:textColor="@color/design_default_color_primary"
+            android:textSize="14dp"/>
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:background="@color/bottomLine"/>
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="50dp"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/imageEvent"
-            android:layout_width="match_parent"
-            android:layout_height="50dp" />
-    </LinearLayout>
 </LinearLayout>

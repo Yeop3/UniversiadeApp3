@@ -9,6 +9,7 @@ import android.view.MenuItem;
 
 import com.example.universiadeapp.fragments.MapFragment;
 import com.example.universiadeapp.fragments.NewsFragment;
+import com.example.universiadeapp.fragments.ResultsFragment;
 import com.example.universiadeapp.fragments.ScheduleFragment;
 
 
@@ -26,6 +27,9 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.navigation_schedule:
                     fragment = new ScheduleFragment();
+                    break;
+                case R.id.navigation_tablescore:
+                    fragment = new ResultsFragment();
                     break;
                 case R.id.navigation_map:
                     fragment = new MapFragment();

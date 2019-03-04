@@ -1,52 +1,60 @@
 package com.example.universiadeapp.models;
 
-import android.graphics.drawable.Drawable;
 
 public class Schedule {
 
-    private String nameEvent;
-    private String placeEvent;
+    private String dataEvent;
+    private int dateEvent;
+    private String typeEvent;
     private String timeEvent;
-//    private int imageEvent;
+    private String urlEvent;
 
-    public Schedule(String nameEvent, String placeEvent, String timeEvent){
+    public Schedule(String dataEvent, int dateEvent, String timeEvent, String urlEvent, String typeEvent){
 
-        this.nameEvent = nameEvent;
-        this.placeEvent = placeEvent;
+        this.dataEvent = dataEvent;
         this.timeEvent = timeEvent;
-//        this.imageEvent = imageEvent;
-
+        this.dateEvent = dateEvent;
+        this.urlEvent = urlEvent;
+        this.typeEvent = typeEvent;
     }
 
-    public String getNameEvent(){
-        return this.nameEvent;
+    public String getDataEvent() {
+        return dataEvent;
     }
 
-    public void setNameEvent(String nameEvent){
-        this.nameEvent = nameEvent;
+    public void setDataEvent(String dataEvent) {
+        this.dataEvent = dataEvent;
     }
 
-    public String getPlaceEvent(){
-        return  this.placeEvent;
-    }
-
-    public void setPlaceEvent(String placeEvent){
-        this.placeEvent = placeEvent;
-    }
-
-    public String getTimeEvent(){
-        return this.timeEvent;
+    public String getTimeEvent() {
+        return timeEvent;
     }
 
     public void setTimeEvent(String timeEvent) {
         this.timeEvent = timeEvent;
     }
 
-//    public Drawable getImageEvent() {
-//        return imageEvent;
-//    }
-//
-//    public void setImageEvent(int imageEvent) {
-//        this.imageEvent = imageEvent;
-//    }
+    public int getDateEvent() {
+        return dateEvent;
+    }
+
+    public void setDateEvent(int dateEvent) {
+        this.dateEvent = dateEvent;
+    }
+
+    public String getUrlEvent() {
+        return urlEvent;
+    }
+
+    public void setUrlEvent(String urlEvent) {
+        this.urlEvent = urlEvent;
+    }
+
+    public String getTypeEvent() {
+        return typeEvent;
+    }
+
+    public void setTypeEvent(String typeEvent) {
+        this.typeEvent = typeEvent;
+    }
 }

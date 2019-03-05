@@ -1,5 +1,6 @@
 package com.example.universiadeapp.fragments;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,9 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.example.universiadeapp.DetailActivity;
 import com.example.universiadeapp.R;
+import com.example.universiadeapp.ScheduleDetail;
 import com.example.universiadeapp.adapters.ScheduleAdapter;
 import com.example.universiadeapp.models.Schedule;
+import com.example.universiadeapp.utils.OnClick;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -34,9 +38,10 @@ import java.util.List;
 import devs.mulham.horizontalcalendar.HorizontalCalendar;
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
 
-public class ScheduleFragment extends Fragment {
+public class ScheduleFragment extends Fragment implements OnClick {
     List<Schedule> schedules = new ArrayList<>();
     List<Schedule> schedule = new ArrayList<>();
+    List<Schedule> timeListSchedule = new ArrayList<>();
     HorizontalCalendar horizontalCalendar;
     ScheduleAdapter adapter;
     RecyclerView recyclerView;
@@ -54,13 +59,16 @@ public class ScheduleFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_schedule, container, false);
 
         sPref = PreferenceManager.getDefaultSharedPreferences(getContext());
-        schedules.clear();
-        schedules.addAll(Arrays.asList(new Gson().fromJson(sPref.getString("schedule", "[]"), Schedule[].class)));
+        timeListSchedule.clear();
+        timeListSchedule.addAll(Arrays.asList(new Gson().fromJson(sPref.getString("schedule", "[]"), Schedule[].class)));
 
         recyclerView = rootView.findViewById(R.id.list);
 
         adapter = new ScheduleAdapter(getActivity(), schedule);
         recyclerView.setAdapter(adapter);
+
+        adapter.mySetOnClickListener(this);
+
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
@@ -83,9 +91,9 @@ public class ScheduleFragment extends Fragment {
             @Override
             public void onDateSelected(Calendar date, int position) {
                 schedule.clear();
-                for (int j = 0; j < schedules.size(); j++) {
-                    if (schedules.get(j).getDateEvent() == date.get(Calendar.DAY_OF_MONTH))
-                        schedule.add(schedules.get(j));
+                for (int j = 0; j < timeListSchedule.size(); j++) {
+                    if (timeListSchedule.get(j).getDateEvent() == date.get(Calendar.DAY_OF_MONTH))
+                        schedule.add(timeListSchedule.get(j));
                 }
                 adapter.notifyDataSetChanged();
             }
@@ -94,6 +102,13 @@ public class ScheduleFragment extends Fragment {
         new newsParse().execute();
 
         return rootView;
+    }
+
+    @Override
+    public void setOnClickListener(int position) {
+        Intent intent = new Intent(getContext(), ScheduleDetail.class);
+        intent.putExtra("detail", schedule.get(position));
+        startActivity(intent);
     }
 
     private class newsParse extends AsyncTask<Void, Void, Void> {

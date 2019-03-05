@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.universiadeapp.R;
 import com.example.universiadeapp.models.Schedule;
+import com.example.universiadeapp.utils.OnClick;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -18,12 +19,17 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
 
     private LayoutInflater inflater;
     private List<Schedule> schedule;
+    private OnClick clickListener;
 
     public ScheduleAdapter(Context context, List<Schedule> schedule) {
 
         this.schedule = schedule;
         this.inflater = LayoutInflater.from(context);
 
+    }
+
+    public void mySetOnClickListener(OnClick clickListener) {
+        this.clickListener = clickListener;
     }
 
     @Override
@@ -54,6 +60,13 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
             timeView = (TextView) view.findViewById(R.id.timeEvent);
             typeView = (TextView) view.findViewById(R.id.typeEvent);
             dataView = (TextView) view.findViewById(R.id.dataEvent);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    clickListener.setOnClickListener(getAdapterPosition());
+                }
+            });
         }
     }
 }

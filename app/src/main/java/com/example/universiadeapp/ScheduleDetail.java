@@ -5,15 +5,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.universiadeapp.adapters.ScheduleDetailAdapter;
 import com.example.universiadeapp.models.Schedule;
 import com.example.universiadeapp.models.ScheduleResult;
-import com.google.android.gms.games.Player;
-import com.squareup.picasso.Picasso;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -56,11 +52,11 @@ public class ScheduleDetail extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.list);
 
-        adapter = new ScheduleDetailAdapter(getApplicationContext(), schedule_d);
-        recyclerView.setAdapter(adapter);
-
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
+
+        adapter = new ScheduleDetailAdapter(getApplicationContext(), schedule_d);
+        recyclerView.setAdapter(adapter);
 
         new scheduleParseDetails().execute();
     }
@@ -111,11 +107,6 @@ public class ScheduleDetail extends AppCompatActivity {
 
                     schedule_d.add(new ScheduleResult(NumDetail, FlagDetail, PlayerDetail, CountryDetail, ResultDetail));
                 }
-
-
-
-
-
             }catch (IOException e){
                 e.printStackTrace();
             }

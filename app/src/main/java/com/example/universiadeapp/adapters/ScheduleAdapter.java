@@ -5,13 +5,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.universiadeapp.R;
 import com.example.universiadeapp.models.Schedule;
 import com.example.universiadeapp.utils.OnClick;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -22,10 +20,8 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
     private OnClick clickListener;
 
     public ScheduleAdapter(Context context, List<Schedule> schedule) {
-
         this.schedule = schedule;
         this.inflater = LayoutInflater.from(context);
-
     }
 
     public void mySetOnClickListener(OnClick clickListener) {
@@ -54,12 +50,13 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         final TextView dataView, typeView, timeView;
-        ViewHolder(View view) {
 
+        ViewHolder(View view) {
             super(view);
-            timeView = (TextView) view.findViewById(R.id.timeEvent);
-            typeView = (TextView) view.findViewById(R.id.typeEvent);
-            dataView = (TextView) view.findViewById(R.id.dataEvent);
+
+            timeView = view.findViewById(R.id.timeEvent);
+            typeView = view.findViewById(R.id.typeEvent);
+            dataView = view.findViewById(R.id.dataEvent);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

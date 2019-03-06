@@ -1,7 +1,6 @@
 package com.example.universiadeapp.adapters;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,21 +9,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.universiadeapp.R;
-import com.example.universiadeapp.ScheduleDetail;
-import com.example.universiadeapp.models.Schedule;
 import com.example.universiadeapp.models.ScheduleResult;
-import com.example.universiadeapp.utils.OnClick;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class ScheduleDetailAdapter extends RecyclerView.Adapter<ScheduleDetailAdapter.ViewHolder>{
+public class ScheduleDetailAdapter extends RecyclerView.Adapter<ScheduleDetailAdapter.ViewHolder> {
 
     private LayoutInflater inflater;
     private List<ScheduleResult> schedule_detail;
 
     public ScheduleDetailAdapter(Context context, List<ScheduleResult> schedule_detail) {
-
         this.schedule_detail = schedule_detail;
         this.inflater = LayoutInflater.from(context);
 
@@ -52,13 +47,13 @@ public class ScheduleDetailAdapter extends RecyclerView.Adapter<ScheduleDetailAd
         return schedule_detail.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView numDetail, playerDetail, countryDetail, resultDetail;
-        public ImageView flagDetail;
+    class ViewHolder extends RecyclerView.ViewHolder {
+        TextView numDetail, playerDetail, countryDetail, resultDetail;
+        ImageView flagDetail;
 
         ViewHolder(View view) {
-
             super(view);
+
             numDetail = view.findViewById(R.id.numDetail);
             playerDetail = view.findViewById(R.id.playerDetail);
             countryDetail = view.findViewById(R.id.countryDetail);
